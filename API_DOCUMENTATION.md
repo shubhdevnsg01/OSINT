@@ -4,6 +4,12 @@ Base URL: `http://localhost:8000`
 
 FastAPI also exposes interactive documentation at `/docs` and OpenAPI JSON at `/openapi.json`.
 
+## Root API Info
+
+`GET /`
+
+Returns a small JSON index with health, documentation, investigation, history, and report endpoint URLs.
+
 ## Health Check
 
 `GET /health`

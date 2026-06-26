@@ -11,7 +11,7 @@ pip install -r requirements.txt
 python -m backend.main
 ```
 
-The development server binds to `127.0.0.1:8000` by default. Open `http://127.0.0.1:8000/docs` for Swagger UI or `http://127.0.0.1:8000/health` for a quick health check.
+The development server binds to `127.0.0.1:8000` by default. Open `http://127.0.0.1:8000/` for the API index, `http://127.0.0.1:8000/docs` for Swagger UI, or `http://127.0.0.1:8000/health` for a quick health check.
 
 ## Windows socket error: WinError 10013
 

@@ -4,7 +4,7 @@ from datetime import UTC, datetime
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, Response
 
 from backend.api.endpoints import investigation, reports
 from backend.core.config import settings
@@ -24,6 +24,27 @@ app.add_middleware(
 
 app.include_router(investigation.router)
 app.include_router(reports.router)
+
+
+@app.get("/")
+async def root() -> dict[str, object]:
+    return {
+        "name": settings.app_name,
+        "status": "operational",
+        "version": settings.app_version,
+        "docs_url": "/docs",
+        "health_url": "/health",
+        "endpoints": {
+            "investigate_username": "/api/v1/investigation/username",
+            "investigation_history": "/api/v1/investigation/history",
+            "generate_report": "/api/v1/reports/generate-report/{investigation_id}",
+        },
+    }
+
+
+@app.get("/favicon.ico", include_in_schema=False)
+async def favicon() -> Response:
+    return Response(status_code=204)
 
 
 @app.get("/health")
