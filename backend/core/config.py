@@ -18,6 +18,8 @@ class Settings(BaseSettings):
         validation_alias="DATABASE_URL",
     )
     redis_url: str = Field(default="redis://localhost:6379/0", validation_alias="REDIS_URL")
+    host: str = Field(default="127.0.0.1", validation_alias="HOST")
+    port: int = Field(default=8000, validation_alias="PORT")
     twitter_bearer_token: str | None = Field(default=None, validation_alias="TWITTER_BEARER_TOKEN")
     rapidapi_key: str | None = Field(default=None, validation_alias="RAPIDAPI_KEY")
     telegram_bot_token: str | None = Field(default=None, validation_alias="TELEGRAM_BOT_TOKEN")
