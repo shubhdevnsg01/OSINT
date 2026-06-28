@@ -22,6 +22,7 @@ class FlashAPIService:
         self.host = settings.flashapi_host
         self.endpoint_path = settings.flashapi_endpoint_path.strip("/")
         self.base_url = settings.flashapi_base_url.rstrip("/")
+        self.username_param = settings.flashapi_username_param
 
     async def lookup_username(self, username: str, platform: str | None = None) -> dict[str, Any]:
         """Look up public profile data for a username using FlashAPI.
@@ -34,14 +35,12 @@ class FlashAPIService:
         if not self.endpoint_path:
             return self._not_configured(username, platform, "missing FLASHAPI_ENDPOINT_PATH")
 
-        url = f"{self.base_url}/{self.endpoint_path}"
+        url = f"{self.base_url}/{self.endpoint_path}/"
         headers = {
             "X-RapidAPI-Key": self.api_key,
             "X-RapidAPI-Host": self.host,
         }
-        params = {"username": username}
-        if platform:
-            params["platform"] = platform
+        params = {self.username_param: username, "nocors": str(settings.flashapi_nocors).lower()}
 
         async with httpx.AsyncClient(timeout=settings.flashapi_timeout_seconds) as client:
             response = await client.get(url, headers=headers, params=params)
@@ -54,6 +53,7 @@ class FlashAPIService:
             "username": username,
             "platform": platform,
             "endpoint_path": self.endpoint_path,
+            "username_param": self.username_param,
             "raw_data": payload,
             "fetched_at": datetime.now(UTC).isoformat(),
         }

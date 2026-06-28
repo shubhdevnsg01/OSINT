@@ -56,6 +56,6 @@ Required environment variables:
 - `RAPIDAPI_KEY`
 - `FLASHAPI_HOST` default: `flashapi1.p.rapidapi.com`
 - `FLASHAPI_BASE_URL` default: `https://flashapi1.p.rapidapi.com`
-- `FLASHAPI_ENDPOINT_PATH` copied from the RapidAPI playground generated request URL
+- `FLASHAPI_ENDPOINT_PATH` default: `ig/info_username/`
 
-When the RapidAPI key or endpoint path is missing, the API still works and returns a `not_configured` enrichment object for local development.
+When the RapidAPI key is missing, the API still works and returns a `not_configured` enrichment object for local development.

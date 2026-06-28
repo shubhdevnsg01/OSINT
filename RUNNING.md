@@ -52,7 +52,7 @@ netsh interface ipv4 show excludedportrange protocol=tcp
 $env:RAPIDAPI_KEY = "your-rapidapi-key"
 $env:FLASHAPI_HOST = "flashapi1.p.rapidapi.com"
 $env:FLASHAPI_BASE_URL = "https://flashapi1.p.rapidapi.com"
-$env:FLASHAPI_ENDPOINT_PATH = "the/copied/path"
+$env:FLASHAPI_ENDPOINT_PATH = "ig/info_username/"
 $env:PORT = "8010"
 python -m backend.main
 ```
@@ -60,4 +60,4 @@ python -m backend.main
 4. Open `http://127.0.0.1:8010/docs` and run `POST /api/v1/investigation/username`.
 5. Check the response field `platform_data.flashapi_enrichment`.
 
-If `RAPIDAPI_KEY` or `FLASHAPI_ENDPOINT_PATH` is missing, the backend returns `status: not_configured` in `flashapi_enrichment` instead of failing the whole investigation.
+If `RAPIDAPI_KEY` is missing, the backend returns `status: not_configured` in `flashapi_enrichment` instead of failing the whole investigation.

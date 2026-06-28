@@ -24,7 +24,7 @@ Configure it with:
 $env:RAPIDAPI_KEY = "your-rapidapi-key"
 $env:FLASHAPI_HOST = "flashapi1.p.rapidapi.com"
 $env:FLASHAPI_BASE_URL = "https://flashapi1.p.rapidapi.com"
-$env:FLASHAPI_ENDPOINT_PATH = "paste-the-endpoint-path-from-the-rapidapi-code-snippet"
+$env:FLASHAPI_ENDPOINT_PATH = "ig/info_username/"
 ```
 
-RapidAPI calls require the `X-RapidAPI-Key` and `X-RapidAPI-Host` headers. Copy the exact endpoint path from the RapidAPI playground's generated code snippet because the public playground URL only exposes the endpoint ID, not the callable path.
+RapidAPI calls require the `X-RapidAPI-Key` and `X-RapidAPI-Host` headers. The current FlashAPI Instagram username endpoint path is configured as `ig/info_username/`.
