@@ -28,7 +28,7 @@ class Settings(BaseSettings):
     flashapi_host: str = Field(default="flashapi1.p.rapidapi.com", validation_alias="FLASHAPI_HOST")
     flashapi_base_url: str = Field(default="https://flashapi1.p.rapidapi.com", validation_alias="FLASHAPI_BASE_URL")
     flashapi_endpoint_path: str = Field(default="ig/info_username/", validation_alias="FLASHAPI_ENDPOINT_PATH")
-    flashapi_username_param: str = Field(default="username", validation_alias="FLASHAPI_USERNAME_PARAM")
+    flashapi_username_param: str = Field(default="user", validation_alias="FLASHAPI_USERNAME_PARAM")
     flashapi_nocors: bool = Field(default=False, validation_alias="FLASHAPI_NOCORS")
     flashapi_timeout_seconds: float = Field(default=15.0, validation_alias="FLASHAPI_TIMEOUT_SECONDS")
     telegram_bot_token: str | None = Field(default=None, validation_alias="TELEGRAM_BOT_TOKEN")
