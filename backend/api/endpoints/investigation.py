@@ -30,6 +30,43 @@ def generate_investigation_id() -> str:
     return f"inv_{uuid4().hex}"
 
 
+def apply_flashapi_instagram_fallback(
+    platform_data: dict[str, Any],
+    flashapi_data: dict[str, Any],
+) -> dict[str, Any]:
+    raw_data = flashapi_data.get("raw_data") if isinstance(flashapi_data, dict) else None
+    user_data = raw_data.get("user") if isinstance(raw_data, dict) else None
+    if not isinstance(user_data, dict):
+        return platform_data
+
+    normalized = {
+        "success": True,
+        "exists": True,
+        "platform": "instagram",
+        "username": user_data.get("username") or platform_data.get("username"),
+        "full_name": user_data.get("full_name") or platform_data.get("full_name"),
+        "bio": user_data.get("biography") or platform_data.get("bio"),
+        "profile_pic_url": user_data.get("profile_pic_url") or platform_data.get("profile_pic_url"),
+        "profile_pic_hd": (user_data.get("hd_profile_pic_url_info") or {}).get("url"),
+        "follower_count": user_data.get("follower_count"),
+        "following_count": user_data.get("following_count"),
+        "post_count": user_data.get("media_count"),
+        "followers": user_data.get("follower_count"),
+        "following": user_data.get("following_count"),
+        "posts_count": user_data.get("media_count"),
+        "is_verified": user_data.get("is_verified"),
+        "is_private": user_data.get("is_private"),
+        "is_business": user_data.get("is_business"),
+        "business_category": user_data.get("category"),
+        "external_url": user_data.get("external_url"),
+        "raw_data": raw_data,
+    }
+    platform_data.pop("error", None)
+    platform_data.update({key: value for key, value in normalized.items() if value is not None})
+    platform_data["source"] = "flashapi_fallback"
+    return platform_data
+
+
 async def scrape_platform(username: str, platform: str) -> dict[str, Any]:
     service_map = {
         "instagram": InstagramDataService(),
@@ -48,6 +85,8 @@ async def scrape_platform(username: str, platform: str) -> dict[str, Any]:
         platform_data = await service.get_profile(username)
 
     flashapi_data = await FlashAPIService().lookup_username(username, platform)
+    if platform == "instagram" and flashapi_data.get("status") == "completed":
+        platform_data = apply_flashapi_instagram_fallback(platform_data, flashapi_data)
     platform_data["flashapi_enrichment"] = flashapi_data
     return platform_data
 
