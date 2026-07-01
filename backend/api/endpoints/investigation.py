@@ -79,36 +79,6 @@ def extract_flashapi_related_profiles(user_data: dict[str, Any]) -> list[dict[st
     return [profile for profile in related_profiles if profile.get("username")]
 
 
-def default_instagram_catalog_fields(platform_data: dict[str, Any]) -> dict[str, Any]:
-    """Stable Instagram catalog keys returned even when providers omit data."""
-    return {
-        "profile_pic_hash": platform_data.get("profile_pic_hash"),
-        "profile_pic_hash_method": platform_data.get("profile_pic_hash_method"),
-        "account_created": platform_data.get("account_created"),
-        "account_country_region": platform_data.get("account_country_region"),
-        "former_usernames": platform_data.get("former_usernames"),
-        "active_ads": platform_data.get("active_ads"),
-        "linked_facebook_account": platform_data.get("linked_facebook_account"),
-        "story_highlights": platform_data.get("story_highlights"),
-        "reels_igtv_count": platform_data.get("reels_igtv_count"),
-        "recent_posts": platform_data.get("recent_posts", []),
-        "last_12_posts_captions": platform_data.get("last_12_posts_captions", []),
-        "post_hashtags": platform_data.get("post_hashtags", []),
-        "post_timestamps": platform_data.get("post_timestamps", []),
-        "post_location_tags": platform_data.get("post_location_tags", []),
-        "tagged_users_in_posts": platform_data.get("tagged_users_in_posts", []),
-        "mentioned_users_in_captions": platform_data.get("mentioned_users_in_captions", []),
-        "tagged_photos": platform_data.get("tagged_photos"),
-        "comments_made_by_subject": platform_data.get("comments_made_by_subject"),
-        "pinned_posts": platform_data.get("pinned_posts", []),
-        "collab_posts": platform_data.get("collab_posts", []),
-        "all_hashtags_used": platform_data.get("all_hashtags_used", []),
-        "all_tagged_users": platform_data.get("all_tagged_users", []),
-        "all_mentioned_users": platform_data.get("all_mentioned_users", []),
-        "related_instagram_profiles": platform_data.get("related_instagram_profiles", []),
-    }
-
-
 def apply_flashapi_instagram_fallback(
     platform_data: dict[str, Any],
     flashapi_data: dict[str, Any],
@@ -125,7 +95,6 @@ def apply_flashapi_instagram_fallback(
     )
     bio = clean_flashapi_text(user_data.get("biography")) or clean_flashapi_text(platform_data.get("bio"))
     normalized = {
-        **default_instagram_catalog_fields(platform_data),
         "success": True,
         "exists": True,
         "platform": "instagram",
@@ -162,10 +131,7 @@ def apply_flashapi_instagram_fallback(
         "raw_data": raw_data,
     }
     platform_data.pop("error", None)
-    platform_data.update(normalized)
-    for key, value in list(platform_data.items()):
-        if value is None and key not in normalized:
-            platform_data.pop(key)
+    platform_data.update({key: value for key, value in normalized.items() if value is not None})
     platform_data["source"] = "flashapi_fallback"
     return platform_data
 
