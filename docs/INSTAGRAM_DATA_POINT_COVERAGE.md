@@ -42,6 +42,11 @@ Source catalog: `docs/data_points_catalog-Instagram.csv` from the public OSINT r
 | Account region/Facebook id if present | `account_country_region`, `linked_facebook_account` |
 | Related Instagram suggestions | `related_instagram_profiles` from FlashAPI `chaining_results` |
 
+The FlashAPI fallback now keeps the same stable catalog keys as direct
+Instaloader extraction, even when the provider omits a value. Provider access
+messages such as `Access Delayed: Only owner can access` are treated as missing
+data instead of being exposed as profile names.
+
 ## Returned as stable keys with coverage notes
 
 These catalog items are not reliably available from public Instagram scraping or require extra login/authorization-specific collection. The API returns `None` and explains the limitation in `catalog_coverage_notes`.
